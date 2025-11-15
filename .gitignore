@@ -32,3 +32,10 @@ yarn-error.log*
 
 # Docker/local overrides
 *.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
