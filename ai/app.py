@@ -4,11 +4,10 @@ import xgboost as xgb
 import numpy as np
 import os
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # папка, где лежит app.py
-MODEL_PATH = os.path.join(BASE_DIR, "models", "xgb_model.json")
+MODEL_PATH = "/app/models/xgb_model.json"
 
-print("Base dir:", BASE_DIR)
-print("Models folder:", os.listdir(os.path.join(BASE_DIR, "models")))
+#print("Base dir:", BASE_DIR)
+#print("Models folder:", os.listdir(os.path.join(BASE_DIR, "models")))
 
 # cechy w tej samej kolejności co w feature_cols
 FEATURE_ORDER = ['elo_home', 'elo_away', 'elo_diff',

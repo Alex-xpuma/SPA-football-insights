@@ -11,6 +11,24 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+      start_period: 5s
+    networks:
+      - app-network
+
+  ai:
+    build: ./ai                 
+    container_name: ai-service
+    ports:
+      - "5001:5000"            
+    depends_on:
+      - db                   
+    networks:
+      - app-network
 
   server:
     build: ./server
@@ -21,6 +39,9 @@ services:
       - ./server/.env
     depends_on:
       - db
+      - ai
+    networks:
+      - app-network
 
   client:
     build: ./client
@@ -29,6 +50,12 @@ services:
       - "3000:80"
     depends_on:
       - server
+    networks:
+      - app-network
 
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge

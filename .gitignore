@@ -33,12 +33,19 @@ yarn-error.log*
 # Docker/local overrides
 *.local
 
+# Docker build files
+Dockerfile.*
+docker-compose.override.yml
+
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 *.sqlite3
+
+# Python logs
+*.log
 
 # Ignore local SQLite database
 ai/data/database.sqlite
