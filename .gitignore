@@ -12,6 +12,7 @@
 
 # production
 /build
+.vscode/
 
 # misc
 .DS_Store
@@ -49,3 +50,8 @@ __pycache__/
 
 # Ignore local SQLite database
 ai/data/database.sqlite
+
+# Node, Python, Docker
+client/node_modules/
+server/node_modules/
+node_modules/

@@ -6,6 +6,8 @@ import dotenv from "dotenv"; //import .env
 import waitPort from 'wait-port';
 import matchesRouter from "./routes/matches.js";
 
+import setupSwagger from "./swagger.js";
+
 dotenv.config();
 
 const app = express();
@@ -43,3 +45,4 @@ async function startServer() {
 }
 
 startServer();
+setupSwagger(app);
