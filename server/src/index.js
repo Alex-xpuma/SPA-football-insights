@@ -7,12 +7,14 @@ import waitPort from 'wait-port';
 import matchesRouter from "./routes/matches.js";
 
 import setupSwagger from "./swagger.js";
+import teamsRoutes from "./routes/teams.js";
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use("/api/teams", teamsRoutes);
 
 const PORT = process.env.PORT || 5000;
 const AI_URL = process.env.AI_URL || 'http://ai:5000';

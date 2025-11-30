@@ -68,7 +68,9 @@ export default function MatchesTable() {
   const handleSave = async (payload) => {
     try {
       if (editMatch) {
-        const updated = await updateMatch(editMatch.id, payload);
+        const updatedResp = await updateMatch(editMatch.id, payload);
+        // если бэкенд вернул { match, elo_updated }
+        const updated = updatedResp.match ? updatedResp.match : updatedResp;
         setMatches((prev) => prev.map((m) => (m.id === updated.id ? updated : m)));
       } else {
         const created = await createMatch(payload);
@@ -108,7 +110,6 @@ export default function MatchesTable() {
         <Table striped bordered hover responsive>
           <thead>
             <tr>
-              <th>ID</th>
               <th>Home</th>
               <th>Away</th>
               <th>Score</th>
@@ -119,7 +120,6 @@ export default function MatchesTable() {
           <tbody>
             {matches.map((m) => (
               <tr key={m.id}>
-                <td>{m.id}</td>
                 <td>{m.team_home}</td>
                 <td>{m.team_away}</td>
                 <td>{m.score_home ?? "-"} : {m.score_away ?? "-"}</td>
@@ -127,7 +127,14 @@ export default function MatchesTable() {
                 <td>
                   <Button size="sm" variant="outline-primary" onClick={() => handleEdit(m)}>Edit</Button>{" "}
                   <Button size="sm" variant="outline-danger" onClick={() => handleDelete(m.id)}>Delete</Button>{" "}
-                  <Button size="sm" variant="outline-secondary" onClick={() => openAIModal(m)}>Get prediction</Button>
+                  <Button
+                    size="sm"
+                    variant="outline-secondary"
+                    onClick={() => openAIModal(m)}
+                    disabled={new Date(m.match_date).setHours(0,0,0,0) < new Date().setHours(0,0,0,0)}
+                  >
+                    Get prediction
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -150,7 +157,6 @@ export default function MatchesTable() {
         onHide={() => setShowAIModal(false)}
         match={selectedMatchForAI}
         onPredict={(payload) => {
-          // optional: if you want to save prediction to db, do it here
           return predictAI(payload);
         }}
       />
