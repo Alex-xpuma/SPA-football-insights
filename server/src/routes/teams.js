@@ -3,7 +3,32 @@ import pool from "../db.js";
 
 const router = express.Router();
 
-// GET /api/teams — получить все команды
+/* -----------------------------------
+   GET /api/teams — Get all teams
+----------------------------------- */
+/**
+ * @swagger
+ * /api/teams:
+ *   get:
+ *     summary: Get all teams
+ *     tags: [Teams]
+ *     responses:
+ *       200:
+ *         description: List of all teams
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Team'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
 router.get("/", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM teams ORDER BY name ASC");
@@ -14,7 +39,42 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST /api/teams — добавить новую команду
+/* -----------------------------------
+   POST /api/teams — Add new team
+----------------------------------- */
+/**
+ * @swagger
+ * /api/teams:
+ *   post:
+ *     summary: Add a new team
+ *     tags: [Teams]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Brazil
+ *     responses:
+ *       200:
+ *         description: Team created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Team'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
 router.post("/", async (req, res) => {
   try {
     const { name } = req.body;

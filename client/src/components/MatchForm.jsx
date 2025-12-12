@@ -6,15 +6,22 @@ import axios from "axios";
 
 export default function MatchForm({ initial, onSave, onCancel }) {
   const [teams, setTeams] = useState([]);
+
   const [teamHome, setTeamHome] = useState("");
   const [teamAway, setTeamAway] = useState("");
+
+  const [newHomeTeam, setNewHomeTeam] = useState("");
+  const [newAwayTeam, setNewAwayTeam] = useState("");
+
   const [scoreHome, setScoreHome] = useState(0);
   const [scoreAway, setScoreAway] = useState(0);
   const [date, setDate] = useState("");
 
+  const API = (process.env.REACT_APP_API_URL || "http://localhost:5000/api");
+
   useEffect(() => {
     // получаем список команд
-    axios.get((process.env.REACT_APP_API_URL || "http://localhost:5000/api") + "/teams")
+    axios.get(`${API}/teams`)
       .then(res => setTeams(res.data))
       .catch(err => {
         console.error("Failed to fetch teams", err);
@@ -35,23 +42,68 @@ export default function MatchForm({ initial, onSave, onCancel }) {
     }
   }, [initial]);
 
-  const handleSubmit = (e) => {
+  async function createTeamIfNeeded(selectedId, newName) {
+    if (selectedId !== "new") return selectedId; // выбрана существующая команда
+
+    if (!newName.trim()) {
+      alert("Введите название новой команды");
+      return null;
+    }
+
+    try {
+      const res = await axios.post(`${API}/teams`, { name: newName });
+      return res.data.id; // API должен вернуть созданную команду
+    } catch (err) {
+      console.error(err);
+      alert("Ошибка создания команды");
+      return null;
+    }
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (teamsEqual) {
+      alert("Home team and Away team must be different!");
+      return; // прекращаем сохранение
+    }
+
+    // Создаём новые команды, если нужно
+    const homeId = await createTeamIfNeeded(teamHome, newHomeTeam);
+    const awayId = await createTeamIfNeeded(teamAway, newAwayTeam);
+
+    if (!homeId || !awayId) return;
+
+    if (homeId === awayId) {
+      alert("Home team and Away team must be different!");
+      return;
+    }
 
     // гарантия, что не пойдёт отрицательное число
     const safeHome = Math.max(0, Number(scoreHome));
     const safeAway = Math.max(0, Number(scoreAway));
 
     onSave({
-      team_home_id: Number(teamHome),
-      team_away_id: Number(teamAway),
+      team_home_id: Number(homeId),
+      team_away_id: Number(awayId),
       score_home: safeHome,
       score_away: safeAway,
       match_date: date
     });
   };
 
-  const teamsEqual = teamHome && teamAway && teamHome === teamAway;
+  const teamsEqual = (
+    teamHome !== "new" &&
+    teamAway !== "new" &&
+    teamHome === teamAway
+  ) ||
+  (
+    teamHome === "new" &&
+    teamAway === "new" &&
+    newHomeTeam.trim() &&
+    newAwayTeam.trim() &&
+    newHomeTeam.trim().toLowerCase() === newAwayTeam.trim().toLowerCase()
+  );
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -60,7 +112,17 @@ export default function MatchForm({ initial, onSave, onCancel }) {
         <Form.Select value={teamHome} onChange={(e)=>setTeamHome(e.target.value)} required>
           <option value="">Select home team</option>
           {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+          <option value="new">➕ Add new team…</option>
         </Form.Select>
+        {teamHome === "new" && (
+          <Form.Control
+            className="mt-2"
+            placeholder="Enter new team name"
+            value={newHomeTeam}
+            onChange={(e) => setNewHomeTeam(e.target.value)}
+            required
+          />
+        )}
       </Form.Group>
 
       <Form.Group className="mb-2">
@@ -68,7 +130,17 @@ export default function MatchForm({ initial, onSave, onCancel }) {
         <Form.Select value={teamAway} onChange={(e)=>setTeamAway(e.target.value)} required>
           <option value="">Select away team</option>
           {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+          <option value="new">➕ Add new team…</option>
         </Form.Select>
+        {teamAway === "new" && (
+          <Form.Control
+            className="mt-2"
+            placeholder="Enter new team name"
+            value={newAwayTeam}
+            onChange={(e) => setNewAwayTeam(e.target.value)}
+            required
+          />
+        )}
       </Form.Group>
 
       {teamsEqual && (

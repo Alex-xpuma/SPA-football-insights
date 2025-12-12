@@ -159,7 +159,8 @@ router.get("/country/:country", async (req, res) => {
  * @swagger
  * /api/matches:
  *   post:
- *     summary: Add a new match to the database
+ *     summary: Add a new match
+ *     description: Creates a new FIFA match entry in the database. Home and away teams must be different.
  *     tags: [Matches]
  *     requestBody:
  *       required: true
@@ -174,18 +175,51 @@ router.get("/country/:country", async (req, res) => {
  *             properties:
  *               team_home:
  *                 type: string
+ *                 example: "Brazil"
  *               team_away:
  *                 type: string
+ *                 example: "Argentina"
  *               score_home:
  *                 type: integer
+ *                 example: 2
  *               score_away:
  *                 type: integer
+ *                 example: 1
  *               match_date:
  *                 type: string
  *                 format: date
+ *                 example: "2025-06-14"
  *     responses:
  *       201:
- *         description: Match added successfully
+ *         description: Match successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 15
+ *                 team_home:
+ *                   type: string
+ *                   example: "Brazil"
+ *                 team_away:
+ *                   type: string
+ *                   example: "Argentina"
+ *                 score_home:
+ *                   type: integer
+ *                   example: 2
+ *                 score_away:
+ *                   type: integer
+ *                   example: 1
+ *                 match_date:
+ *                   type: string
+ *                   format: date
+ *                   example: "2025-06-14"
+ *       400:
+ *         description: Validation error (teams are same or missing fields)
+ *       500:
+ *         description: Server error
  */
 
 router.post("/", async (req, res) => {
