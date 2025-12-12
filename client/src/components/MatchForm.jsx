@@ -8,8 +8,8 @@ export default function MatchForm({ initial, onSave, onCancel }) {
   const [teams, setTeams] = useState([]);
   const [teamHome, setTeamHome] = useState("");
   const [teamAway, setTeamAway] = useState("");
-  const [scoreHome, setScoreHome] = useState("");
-  const [scoreAway, setScoreAway] = useState("");
+  const [scoreHome, setScoreHome] = useState(0);
+  const [scoreAway, setScoreAway] = useState(0);
   const [date, setDate] = useState("");
 
   useEffect(() => {
@@ -24,28 +24,34 @@ export default function MatchForm({ initial, onSave, onCancel }) {
 
   useEffect(() => {
     if (initial) {
-      // initial может быть либо match, либо { match: ... } — подстраховка
       const m = initial.match ? initial.match : initial;
       setTeamHome(m.team_home_id ?? "");
       setTeamAway(m.team_away_id ?? "");
-      setScoreHome(m.score_home ?? "");
-      setScoreAway(m.score_away ?? "");
+      setScoreHome(m.score_home ?? 0);
+      setScoreAway(m.score_away ?? 0);
       setDate(m.match_date ? m.match_date.split("T")[0] : "");
     } else {
-      setTeamHome(""); setTeamAway(""); setScoreHome(""); setScoreAway(""); setDate("");
+      setTeamHome(""); setTeamAway(""); setScoreHome(0); setScoreAway(0); setDate("");
     }
   }, [initial]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // гарантия, что не пойдёт отрицательное число
+    const safeHome = Math.max(0, Number(scoreHome));
+    const safeAway = Math.max(0, Number(scoreAway));
+
     onSave({
       team_home_id: Number(teamHome),
       team_away_id: Number(teamAway),
-      score_home: scoreHome === "" ? null : Number(scoreHome),
-      score_away: scoreAway === "" ? null : Number(scoreAway),
+      score_home: safeHome,
+      score_away: safeAway,
       match_date: date
     });
   };
+
+  const teamsEqual = teamHome && teamAway && teamHome === teamAway;
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -65,14 +71,22 @@ export default function MatchForm({ initial, onSave, onCancel }) {
         </Form.Select>
       </Form.Group>
 
+      {teamsEqual && (
+        <div style={{ color: "red", fontSize: "0.9rem" }}>
+          Home team and Away team must be different.
+        </div>
+      )}
+
       <div className="d-flex gap-2 mb-2">
         <div style={{flex:1}}>
           <Form.Label>Home score</Form.Label>
-          <Form.Control value={scoreHome} onChange={(e)=>setScoreHome(e.target.value)} type="number" />
+          <Form.Control type="number"
+            min="0" value={scoreHome} onWheel={(e) => e.target.blur()} onChange={(e)=>setScoreHome(e.target.value)} />
         </div>
         <div style={{flex:1}}>
           <Form.Label>Away score</Form.Label>
-          <Form.Control value={scoreAway} onChange={(e)=>setScoreAway(e.target.value)} type="number" />
+          <Form.Control type="number"
+            min="0" value={scoreAway} onWheel={(e) => e.target.blur()} onChange={(e)=>setScoreAway(e.target.value)}  />
         </div>
       </div>
 

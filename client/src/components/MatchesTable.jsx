@@ -68,13 +68,11 @@ export default function MatchesTable() {
   const handleSave = async (payload) => {
     try {
       if (editMatch) {
-        const updatedResp = await updateMatch(editMatch.id, payload);
-        // если бэкенд вернул { match, elo_updated }
-        const updated = updatedResp.match ? updatedResp.match : updatedResp;
-        setMatches((prev) => prev.map((m) => (m.id === updated.id ? updated : m)));
+        await updateMatch(editMatch.id, payload);
+        await fetchMatches();
       } else {
-        const created = await createMatch(payload);
-        setMatches((prev) => [created, ...prev]);
+        await createMatch(payload);
+        await fetchMatches(); 
       }
       setShowForm(false);
     } catch (err) {
