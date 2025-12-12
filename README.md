@@ -2,10 +2,31 @@
 
 Single Page Application for managing FIFA matches, built with React, Node.js, PostgreSQL, and Docker.
 
+This project is a Single Page Application (SPA) for managing FIFA matches, built with **React (frontend)**, **Node.js/Express (backend)**, and **PostgreSQL (database)**.  
+It includes a **REST API** and a simple **HTML/JS client** for interacting with it.
+
 ## Structure
 - client/ → React frontend
 - server/ → Node.js backend with REST API
 - docker-compose.yml → Docker configuration
+
+## Features
+
+- **REST API Endpoints:**
+  - `GET /api/matches` — Get all matches (optionally filter by team)
+  - `GET /api/matches/country/:country` — Get matches for a specific country
+  - `POST /api/matches` — Add a new match
+  - `PUT /api/matches/:id` — Update a match
+  - `DELETE /api/matches/:id` — Delete a match
+  - `GET /api/teams` — Get all teams
+  - `POST /api/teams` — Add a new team
+  - `POST /api/matches/predict` — Get AI prediction for a match
+- **Frontend Client:**
+  - View, add, and edit matches
+  - Add new teams directly from the client
+  - Display scores, dates, and team names
+- **Swagger Documentation:** `/api-docs` for testing all API endpoints
+
 
 # Getting Started with Create React App
 
