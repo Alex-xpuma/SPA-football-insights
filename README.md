@@ -8,6 +8,8 @@ It includes a **REST API** and a simple **HTML/JS client** for interacting with 
 ## Structure
 - client/ → React frontend
 - server/ → Node.js backend with REST API
+- bd/ – PostgreSQL database scripts and configuration
+- ai/ – a separate service for predicting matches
 - docker-compose.yml → Docker configuration
 
 ## Features
