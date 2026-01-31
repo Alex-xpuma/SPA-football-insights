@@ -10,7 +10,10 @@ It includes a **REST API** and a simple **HTML/JS client** for interacting with 
 - server/ → Node.js backend with REST API
 - bd/ – PostgreSQL database scripts and configuration
 - ai/ – a separate service for predicting matches
+- Redis (cache layer)
 - docker-compose.yml → Docker configuration
+
+Redis is used to cache frequently requested data to improve performance.
 
 ## Features
 

@@ -40,6 +40,7 @@ services:
     depends_on:
       - db
       - ai
+      - redis
     networks:
       - app-network
 
@@ -50,6 +51,14 @@ services:
       - "3000:80"
     depends_on:
       - server
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
     networks:
       - app-network
 

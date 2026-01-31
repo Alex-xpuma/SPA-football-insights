@@ -15,7 +15,7 @@ export default function AIPredictModal({ show, onHide, match, onPredict }) {
 
   useEffect(() => {
     if (match) {
-      // Автозаполнение — берем значения, которые возвращает бэкенд (elo и avg)
+
       setEloHome(match.elo_home ?? match.elo_home_before ?? 1500);
       setEloAway(match.elo_away ?? 1500);
       setHomeGoalsAvg(match.home_goals_avg ?? 1.0);
@@ -48,7 +48,7 @@ export default function AIPredictModal({ show, onHide, match, onPredict }) {
     try {
       const data = onPredict ? await onPredict(payload) : await predictAI(payload);
       console.log("AI RAW DATA:", data);
-      // ожидаем структуру { input:..., prediction: { prediction: n, probabilities: [...] } }
+
       const pred = data?.prediction?.prediction ?? data?.prediction ?? null;
       const probs = data?.prediction?.probabilities ?? data?.probabilities ?? null;
 

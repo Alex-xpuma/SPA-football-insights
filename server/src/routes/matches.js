@@ -1,6 +1,7 @@
 import express from "express";
 import pool from "../db.js";
 import axios from "axios";
+import redisClient from "../redis/redisClient.js";
 
 const router = express.Router();
 
@@ -65,6 +66,15 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const team = req.query.team;
+    const cacheKey = team ? `matches:team:${team}` : "matches:all";
+
+    // check Redis
+    const cachedData = await redisClient.get(cacheKey);
+    if (cachedData) {
+      console.log("Matches from Redis cache");
+      return res.json(JSON.parse(cachedData));
+    }
+
     let query = `
     SELECT 
       m.id,
@@ -97,6 +107,12 @@ router.get("/", async (req, res) => {
     query += " ORDER BY m.match_date DESC";
 
     const result = await pool.query(query, params);
+
+    // put to Redis (60 sek)
+    await redisClient.set(cacheKey, JSON.stringify(result.rows), {
+      EX: 60
+    });
+
     res.json(result.rows);
   } catch (err) {
     console.error("DB error:", err);
@@ -128,6 +144,13 @@ router.get("/", async (req, res) => {
 router.get("/country/:country", async (req, res) => {
   try {
     const country = req.params.country;
+    const cacheKey = `matches:country:${country}`;
+
+    const cached = await redisClient.get(cacheKey);
+    if (cached) {
+      console.log("Country matches from Redis");
+      return res.json(JSON.parse(cached));
+    }
 
     const result = await pool.query(
       `
@@ -144,6 +167,10 @@ router.get("/country/:country", async (req, res) => {
     `,
       [`%${country}%`]
     );
+
+    await redisClient.set(cacheKey, JSON.stringify(result.rows), {
+      EX: 60
+    });
 
     res.json(result.rows);
   } catch (err) {
@@ -238,6 +265,8 @@ router.post("/", async (req, res) => {
       [team_home_id, team_away_id, score_home || null, score_away || null, match_date, elo_home_before]
     );
 
+    await redisClient.flushAll();
+
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error("DB error:", err);
@@ -295,6 +324,8 @@ router.post("/predict", async (req, res) => {
     };
 
     const aiResponse = await axios.post(`${process.env.AI_URL}/predict`, payload);
+
+    await redisClient.flushAll();
 
     res.json({
       input: payload,
@@ -367,6 +398,8 @@ router.put("/:id", async (req, res) => {
     await pool.query(`UPDATE teams SET elo=$1 WHERE id=$2`, [elo_home_after, team_home_id]);
     await pool.query(`UPDATE teams SET elo=$1 WHERE id=$2`, [elo_away_after, team_away_id]);
 
+    await redisClient.flushAll();
+
     res.json({
       match: result.rows[0],
       elo_updated: {
@@ -406,6 +439,8 @@ router.delete("/:id", async (req, res) => {
     const id = req.params.id;
 
     await pool.query("DELETE FROM matches WHERE id=$1", [id]);
+
+    await redisClient.flushAll();
 
     res.json({ deleted: true });
   } catch (err) {

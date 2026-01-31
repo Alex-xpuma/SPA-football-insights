@@ -1,5 +1,6 @@
 import express from "express";
 import pool from "../db.js";
+import redisClient from "../redis/redisClient.js";
 
 const router = express.Router();
 
@@ -31,7 +32,21 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
+    const cacheKey = "teams:all";
+
+    // check Redis
+    const cachedTeams = await redisClient.get(cacheKey);
+    if (cachedTeams) {
+      console.log("Teams from Redis cache");
+      return res.json(JSON.parse(cachedTeams));
+    }
+
     const result = await pool.query("SELECT * FROM teams ORDER BY name ASC");
+
+    await redisClient.set(cacheKey, JSON.stringify(result.rows), {
+      EX: 60
+    });
+
     res.json(result.rows);
   } catch (error) {
     console.error("DB error:", error);
@@ -84,6 +99,8 @@ router.post("/", async (req, res) => {
       [name]
     );
 
+    await redisClient.del("teams:all");
+    
     res.json(result.rows[0]);
   } catch (error) {
     console.error("DB error:", error);
