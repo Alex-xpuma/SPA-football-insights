@@ -4,6 +4,7 @@ import axios from "axios";
 import redisClient from "../redis/redisClient.js";
 
 const router = express.Router();
+console.log(" matches routes loaded");
 
 /* ---------------------------
    GET all matches + optional team filter
@@ -64,6 +65,7 @@ const router = express.Router();
  */
 
 router.get("/", async (req, res) => {
+  console.log("➡️ GET /api/matches HIT", req.query);
   try {
     const team = req.query.team;
     const cacheKey = team ? `matches:team:${team}` : "matches:all";
@@ -152,6 +154,7 @@ router.get("/country/:country", async (req, res) => {
       return res.json(JSON.parse(cached));
     }
 
+    console.log("not redis");
     const result = await pool.query(
       `
       SELECT 
@@ -171,6 +174,8 @@ router.get("/country/:country", async (req, res) => {
     await redisClient.set(cacheKey, JSON.stringify(result.rows), {
       EX: 60
     });
+    console.log("SAVED TO REDIS");
+    console.log("TTL:", await redis.ttl(key));
 
     res.json(result.rows);
   } catch (err) {

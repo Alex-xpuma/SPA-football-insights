@@ -42,6 +42,7 @@ router.get("/", async (req, res) => {
     }
 
     const result = await pool.query("SELECT * FROM teams ORDER BY name ASC");
+    console.log("not redis");
 
     await redisClient.set(cacheKey, JSON.stringify(result.rows), {
       EX: 60
