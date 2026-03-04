@@ -1,106 +1,85 @@
-# FIFA SPA Project
+# FIFA Match Management System
 
-Single Page Application for managing FIFA matches, built with React, Node.js, PostgreSQL, and Docker.
+Full-stack application for managing FIFA matches with REST API, caching layer and AI prediction service.
 
-This project is a Single Page Application (SPA) for managing FIFA matches, built with **React (frontend)**, **Node.js/Express (backend)**, and **PostgreSQL (database)**.  
-It includes a **REST API** and a simple **HTML/JS client** for interacting with it.
+## Tech Stack
 
-## Structure
-- client/ → React frontend
-- server/ → Node.js backend with REST API
-- bd/ – PostgreSQL database scripts and configuration
-- ai/ – a separate service for predicting matches
-- Redis (cache layer)
-- docker-compose.yml → Docker configuration
+Frontend:
+- React
+- Axios
+- Docker
 
-Redis is used to cache frequently requested data to improve performance.
+Backend:
+- Node.js
+- Express
+- PostgreSQL
+- Redis (caching layer)
+- Swagger (API documentation)
+
+Other:
+- Docker & Docker Compose
+- Separate AI microservice for match prediction
+
+## Architecture
+
+The project is divided into several services:
+
+client/ – React frontend  
+server/ – Node.js REST API  
+bd/ – PostgreSQL configuration and scripts  
+ai/ – AI microservice for match prediction  
+Redis – caching frequently requested data  
+docker-compose.yml – container orchestration  
+
+Redis is used to cache frequently requested match data in order to improve performance and reduce database load.
 
 ## Features
 
-- **REST API Endpoints:**
-  - `GET /api/matches` — Get all matches (optionally filter by team)
-  - `GET /api/matches/country/:country` — Get matches for a specific country
-  - `POST /api/matches` — Add a new match
-  - `PUT /api/matches/:id` — Update a match
-  - `DELETE /api/matches/:id` — Delete a match
-  - `GET /api/teams` — Get all teams
-  - `POST /api/teams` — Add a new team
-  - `POST /api/matches/predict` — Get AI prediction for a match
-- **Frontend Client:**
-  - View, add, and edit matches
-  - Add new teams directly from the client
-  - Display scores, dates, and team names
-- **Swagger Documentation:** `/api-docs` for testing all API endpoints
+### Match Management
+- View all matches
+- Filter matches by team
+- Filter matches by country
+- Add new matches
+- Update matches
+- Delete matches
+
+### Team Management
+- View all teams
+- Add new teams
+
+### AI Prediction
+- Predict match results using a separate AI service
+
+### API Documentation
+Swagger available at:
+`/api-docs
 
 
-# Getting Started with Create React App
+## Running the Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Option 1 – Docker (Recommended)
+docker-compose up --build
 
-## Available Scripts
+### Option 2 – Manual Setup
 
-In the project directory, you can run:
+Backend:
+cd server
+npm install
+npm start
 
-### `npm start`
+Frontend:
+cd client
+npm install
+npm start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+App runs on:
+http://localhost:3000
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## What I focused on
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Building a REST API with proper structure
+- Implementing caching using Redis
+- Separating services (AI microservice)
+- Dockerizing full-stack application
+- Clean project structure
 
