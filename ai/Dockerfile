@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py /app/
 COPY models /app/models
 
-# Указываем порт Flask
+# Указываем порт FastAPI
 EXPOSE 5000
 
 # Запуск приложения
