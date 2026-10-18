@@ -5,8 +5,11 @@ Full-stack application for managing football matches, with a REST API, a Redis c
 ## Tech Stack
 
 Frontend: React, Axios
+
 Backend: Node.js, Express, PostgreSQL, Redis (caching), Swagger (API docs)
+
 AI service: Python, FastAPI, XGBoost, scikit-learn, pandas
+
 Infrastructure: Docker, Docker Compose
 
 
