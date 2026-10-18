@@ -109,29 +109,18 @@ Example response (probabilities are ordered home win, draw, away win):
 ## Running the Project
 
 ### Option 1 – Docker (Recommended)
+
+The API expects PostgreSQL, Redis and the AI service to be running. The simplest way is to start only those services with Docker:
+
+```bash
+docker-compose up db redis ai
+```
+
+Then set `DB_HOST=localhost` and `AI_URL=http://localhost:5001` in `server/.env`.
 ```bash 
 docker-compose up --build
 ```
 
-### Option 2 – Manual Setup
-
-Backend:
-
-```bash
-cd server
-npm install
-npm start
-```
-
-Frontend:
-
-```bash
-cd client
-npm install
-npm start
-```
-
-The app runs on http://localhost:3000
 
 ## What I focused on
 
