@@ -108,18 +108,23 @@ Example response (probabilities are ordered home win, draw, away win):
 
 ## Running the Project
 
-### Option 1 – Docker (Recommended)
-
-The API expects PostgreSQL, Redis and the AI service to be running. The simplest way is to start only those services with Docker:
+Create the environment file for the API:
 
 ```bash
-docker-compose up db redis ai
+cp server/.env.example server/.env
 ```
 
-Then set `DB_HOST=localhost` and `AI_URL=http://localhost:5001` in `server/.env`.
-```bash 
+Start all services:
+
+```bash
 docker-compose up --build
 ```
+
+Then open:
+
+- Client: http://localhost:3000
+- API: http://localhost:5000
+- Swagger UI: http://localhost:5000/api-docs
 
 
 ## What I focused on
