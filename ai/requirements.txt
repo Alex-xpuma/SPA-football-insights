@@ -2,6 +2,6 @@ numpy==2.0.2
 pandas==2.2.2
 scikit-learn==1.6.0
 xgboost==3.1.1
-fastapi==0.121.1   # если AI будет через API
-uvicorn==0.38.0    # для запуска FastAPI
+fastapi==0.121.1  
+uvicorn==0.38.0   
 python-dotenv==1.2.1
