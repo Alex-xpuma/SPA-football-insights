@@ -27,7 +27,7 @@ The React client talks to the Node.js API, which calls the AI service over the i
 
 ## Screenshots
 
-<img width="982" height="738" alt="Снимок экрана 2025-12-01 033310" src="https://github.com/user-attachments/assets/42f6c774-07ed-4337-ad44-5aaf7327b761" />
+<img width="982" height="738" alt="Matches table" src="https://github.com/user-attachments/assets/42f6c774-07ed-4337-ad44-5aaf7327b761" />
 
 ## Features
 ### Match Management
