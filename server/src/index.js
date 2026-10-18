@@ -32,7 +32,7 @@ async function startServer() {
     // --- AI PREDICT ENDPOINT HERE ---
     app.post("/api/predict", async (req, res) => {
         try {
-            const aiResponse = await axios.post(${AI_URL}/predict, req.body);
+            const aiResponse = await axios.post(`${AI_URL}/predict`, req.body);
             res.json(aiResponse.data);
         } catch (error) {
             console.error("AI service error:", error.message);
