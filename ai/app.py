@@ -9,14 +9,14 @@ MODEL_PATH = "/app/models/xgb_model.json"
 #print("Base dir:", BASE_DIR)
 #print("Models folder:", os.listdir(os.path.join(BASE_DIR, "models")))
 
-# cechy w tej samej kolejności co w feature_cols
+# features in the same order as feature_cols in training
 FEATURE_ORDER = ['elo_home', 'elo_away', 'elo_diff',
                  'home_recent_goals_avg', 'home_recent_conceded_avg',
                  'away_recent_goals_avg', 'away_recent_conceded_avg']
 
 app = FastAPI()
 
-# Ładowanie modelu XGBoost z JSON
+# Load the XGBoost model from JSON
 model = xgb.XGBClassifier()
 model.load_model(MODEL_PATH) 
 
