@@ -20,6 +20,7 @@ Infrastructure: Docker, Docker Compose
 | `client/` | React frontend |
 | `server/` | Node.js REST API |
 | `db` | PostgreSQL (Docker service) |
+| `db/` | PostgreSQL schema and sample teams (`init.sql`) |
 | `ai/` | FastAPI microservice that serves the prediction model |
 | `redis` | Cache for frequently requested data |
 
