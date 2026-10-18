@@ -109,7 +109,9 @@ Example response (probabilities are ordered home win, draw, away win):
 ## Running the Project
 
 ### Option 1 – Docker (Recommended)
+```bash 
 docker-compose up --build
+```
 
 ### Option 2 – Manual Setup
 
