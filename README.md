@@ -29,6 +29,26 @@ The React client talks to the Node.js API, which calls the AI service over the i
 
 <img width="982" height="738" alt="Снимок экрана 2025-12-01 033310" src="https://github.com/user-attachments/assets/42f6c774-07ed-4337-ad44-5aaf7327b761" />
 
+## Features
+### Match Management
+- View all matches
+- Filter matches by team
+- Filter matches by country
+- Add new matches
+- Update matches
+- Delete matches
+
+### Team Management
+- View all teams
+- Add new teams
+
+### AI Prediction
+- Predict match results using a separate AI service
+
+### API Documentation
+Swagger available at:
+`/api-docs
+
 
 ## AI Prediction Service
 
@@ -84,24 +104,6 @@ Example response (probabilities are ordered home win, draw, away win):
 { "prediction": 0, "probabilities": [0.52, 0.27, 0.21] }
 ```
 
-### Match Management
-- View all matches
-- Filter matches by team
-- Filter matches by country
-- Add new matches
-- Update matches
-- Delete matches
-
-### Team Management
-- View all teams
-- Add new teams
-
-### AI Prediction
-- Predict match results using a separate AI service
-
-### API Documentation
-Swagger available at:
-`/api-docs
 
 
 ## Running the Project
