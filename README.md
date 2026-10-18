@@ -26,7 +26,7 @@ The project is divided into several services:
 
 client/ – React frontend  
 server/ – Node.js REST API  
-bd/ – PostgreSQL (Docker service)  
+db – PostgreSQL (Docker service)
 ai/ – AI microservice for match prediction  
 Redis – caching frequently requested data  
 docker-compose.yml – container orchestration  
