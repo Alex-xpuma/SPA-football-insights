@@ -47,7 +47,7 @@ The React client talks to the Node.js API, which calls the AI service over the i
 
 ### API Documentation
 Swagger available at:
-`/api-docs
+`/api-docs`
 
 
 ## AI Prediction Service
