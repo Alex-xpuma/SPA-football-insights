@@ -112,11 +112,24 @@ Example response (probabilities are ordered home win, draw, away win):
 docker-compose up --build
 
 ### Option 2 – Manual Setup
-{    "cd server && npm install && npm start"
-   "cd client && npm install && npm start" }
 
-App runs on:
-http://localhost:3000
+Backend:
+
+```bash
+cd server
+npm install
+npm start
+```
+
+Frontend:
+
+```bash
+cd client
+npm install
+npm start
+```
+
+The app runs on http://localhost:3000
 
 ## What I focused on
 
