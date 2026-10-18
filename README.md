@@ -9,6 +9,7 @@ Backend: Node.js, Express, PostgreSQL, Redis (caching), Swagger (API docs)
 AI service: Python, FastAPI, XGBoost, scikit-learn, pandas
 Infrastructure: Docker, Docker Compose
 
+
 ## Architecture
 
 | Service | Description |
